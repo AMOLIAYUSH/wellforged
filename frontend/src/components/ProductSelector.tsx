@@ -43,89 +43,68 @@ const ProductSelector = ({ product }: { product: any }) => {
     await addItem({
       id: selectedSku.id.toString(),
       name: product.name,
-      size: selectedSku.label,
+      size: selectedSku.label.replace(/\s+(Pouch|Jar)$/i, ''),
       price: selectedSku.price,
       originalPrice: selectedSku.original_price,
       image: product.images?.[0]?.image_url || productImage
-    }, quantity);
+    }, 1);
 
-    toast.success(`Added ${quantity} ${selectedSku.label} to cart`);
+    toast.success(`Added ${selectedSku.label.replace(/\s+(Pouch|Jar)$/i, '')} to cart`);
   };
 
   if (!product || !selectedSku) return null;
 
   return (
-    <div className="space-y-[var(--space-md)]">
+    <div className="space-y-[var(--space-sm)]">
       <div className="space-y-[var(--space-xs)]">
-        <label className="font-body text-[var(--text-sm)] font-medium text-foreground uppercase tracking-widest">Select Size</label>
-        <div className="grid grid-cols-2 gap-[var(--space-xs)]">
+        <label className="font-body text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-widest">Select Size</label>
+        <div className="grid grid-cols-2 gap-2">
           {product.variants.map((sku: any) => (
             <button
               key={sku.id}
               onClick={() => setSelectedSku(sku)}
-              className={`relative p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 text-left min-h-[44px] ${selectedSku.id === sku.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/50"
+              className={`relative p-2.5 sm:p-3 rounded-lg border-2 transition-all duration-200 text-left h-full flex flex-col justify-between ${selectedSku.id === sku.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/50"
                 } ${sku.stock === 0 ? "opacity-60 grayscale-[0.5]" : ""}`}
             >
-              <div className="font-display font-semibold text-foreground" style={{ fontSize: "var(--text-base)" }}>{sku.label}</div>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="font-display font-bold text-primary" style={{ fontSize: "var(--text-lg)" }}>₹{sku.price}</span>
-                {sku.original_price && <span className="font-body text-muted-foreground line-through" style={{ fontSize: "var(--text-xs)" }}>₹{sku.original_price}</span>}
-              </div>
+              <div className="font-display font-semibold text-foreground text-sm flex items-center justify-between">{sku.label.replace(/\s+(Pouch|Jar)$/i, '')}</div>
+              <div className="mt-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-display font-bold text-primary text-base">₹{sku.price}</span>
+                  {sku.original_price && <span className="font-body text-muted-foreground line-through text-[10px]">₹{sku.original_price}</span>}
+                </div>
 
-              {/* Stock Status */}
-              <div className="mt-2">
-                {sku.stock === 0 ? (
-                  <span className="text-[10px] sm:text-xs font-bold text-destructive uppercase tracking-wider flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" /> Out of Stock
-                  </span>
-                ) : sku.stock < 20 ? (
-                  <span className="text-[10px] sm:text-xs font-bold text-gold uppercase tracking-wider flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" /> Only {sku.stock} left
-                  </span>
-                ) : (
-                  <span className="text-[10px] sm:text-xs font-medium text-primary uppercase tracking-wider">In Stock</span>
-                )}
+                {/* Stock Status */}
+                <div className="mt-0.5">
+                  {sku.stock === 0 ? (
+                    <span className="text-[9px] font-bold text-destructive uppercase tracking-wider">Out of Stock</span>
+                  ) : sku.stock < 20 ? (
+                    <span className="text-[9px] font-bold text-gold uppercase tracking-wider">Only {sku.stock} left</span>
+                  ) : (
+                    <span className="text-[9px] font-medium text-primary uppercase tracking-wider">In Stock</span>
+                  )}
+                </div>
               </div>
             </button>
           ))}
         </div>
       </div>
-      {/* Quantity & Add to Cart */}
-      <div className="space-y-[var(--space-md)] pt-[var(--space-md)]">
-        <div className="flex items-center gap-[var(--space-md)]">
-          <div className="flex items-center rounded-xl border-2 border-border bg-card p-1">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-muted transition-colors"
-              disabled={quantity <= 1}
-            >
-              <Minus className="h-4 w-4" />
-            </button>
-            <span className="w-10 text-center font-display font-bold text-[var(--text-lg)]">{quantity}</span>
-            <button
-              onClick={() => setQuantity(Math.min(selectedSku.stock || 99, quantity + 1))}
-              className="h-10 w-10 flex items-center justify-center rounded-lg hover:bg-muted transition-colors"
-              disabled={quantity >= (selectedSku.stock || 99)}
-            >
-              <Plus className="h-4 w-4" />
-            </button>
-          </div>
-          <Button
-            variant="hero"
-            size="xl"
-            className="flex-1 h-[var(--space-xl)] gap-2 font-bold uppercase tracking-widest text-primary-foreground"
-            onClick={handleAddToCart}
-            disabled={selectedSku.stock === 0}
-          >
-            {selectedSku.stock === 0 ? (
-              "Out of Stock"
-            ) : (
-              <><ShoppingCart className="h-4 w-4" /> Add to Cart</>
-            )}
-          </Button>
-        </div>
+      {/* Add to Cart */}
+      <div className="space-y-[var(--space-xs)] pt-1">
+        <Button
+          variant="hero"
+          size="default"
+          className="w-full h-11 sm:h-12 gap-2 font-bold uppercase tracking-widest text-primary-foreground text-xs sm:text-sm"
+          onClick={handleAddToCart}
+          disabled={selectedSku.stock === 0}
+        >
+          {selectedSku.stock === 0 ? (
+            "Out of Stock"
+          ) : (
+            <><ShoppingCart className="h-4 w-4" /> Add to Cart</>
+          )}
+        </Button>
         {totalItems > 0 && (
-          <Button variant="outline" size="xl" className="w-full h-[var(--space-xl)] gap-2 text-[var(--text-base)] font-bold uppercase tracking-widest hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all duration-300" onClick={() => setIsOpen(true)}>
+          <Button variant="outline" size="default" className="w-full h-11 gap-2 text-xs font-bold uppercase tracking-widest hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all duration-300 shadow-sm" onClick={() => setIsOpen(true)}>
             <ShoppingBag className="h-4 w-4" /> Go to Cart ({totalItems})
           </Button>
         )}

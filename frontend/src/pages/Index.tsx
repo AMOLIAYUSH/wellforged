@@ -15,7 +15,7 @@ const Index = () => {
         <>
             <Helmet>
                 <title>WellForged | Wellness, Forged with Integrity</title>
-                <meta name="description" content="Most brands ask for your trust. We provide the proof. WellForged is the new standard of radical transparency in wellness." />
+                <meta name="description" content="Most brands ask for your trust. We provide the proof. Welcome to the new standard of radical transparency in wellness." />
                 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet" />
             </Helmet>
             <main className="min-h-screen page-pt">

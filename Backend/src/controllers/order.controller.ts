@@ -21,6 +21,30 @@ export const createOrder = async (req: any, res: Response) => {
             }
             finalAddressSnapshot = guest_details;
 
+            // 1.0 PERSIST GUEST PROFILE
+            // Try to find if a profile exists for this phone; if not create it
+            const profileLookup = await client.query(
+                'SELECT id FROM profiles WHERE phone = $1',
+                [guest_details.mobile_number]
+            );
+
+            if (profileLookup.rows.length > 0) {
+                profileId = profileLookup.rows[0].id;
+                // Optional: Update email if provided and not set
+                if (guest_details.email) {
+                    await client.query(
+                        'UPDATE profiles SET email = COALESCE(email, $1), full_name = $2 WHERE id = $3',
+                        [guest_details.email, guest_details.full_name, profileId]
+                    );
+                }
+            } else {
+                const newProfile = await client.query(
+                    'INSERT INTO profiles (full_name, email, phone, role) VALUES ($1, $2, $3, $4) RETURNING id',
+                    [guest_details.full_name, guest_details.email, guest_details.mobile_number, 'customer']
+                );
+                profileId = newProfile.rows[0].id;
+            }
+
             // Securely fetch details for the requested guest items
             for (const gItem of guest_items) {
                 const skuResult = await client.query(
@@ -70,8 +94,8 @@ export const createOrder = async (req: any, res: Response) => {
         // 1.1 CHECK IDEMPOTENCY
         if (idempotency_key && profileId) {
             const existingOrder = await client.query(
-                'SELECT * FROM orders WHERE profile_id = $1 AND order_number = $2',
-                [profileId, idempotency_key]
+                'SELECT * FROM orders WHERE profile_id = $1 AND order_number LIKE $2',
+                [profileId, `%${idempotency_key}%`]
             );
             if (existingOrder.rows.length > 0) {
                 await client.query('COMMIT');
@@ -88,7 +112,7 @@ export const createOrder = async (req: any, res: Response) => {
             subtotal += item.price * item.quantity;
         }
 
-        const shipping_amount = subtotal >= 500 ? 0 : 49;
+        const shipping_amount = 0;
 
         // 2.6 Apply Coupon
         let discount_amount = 0;
@@ -116,9 +140,9 @@ export const createOrder = async (req: any, res: Response) => {
         // 3. Create local order (Auto-confirm as integrations are decommissioned)
         const order_number = `WF-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
         const orderResult = await client.query(
-            `INSERT INTO orders (profile_id, order_number, total_amount, discount_amount, coupon_id, shipping_address_id, address_snapshot, subtotal, shipping_amount, payment_status) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
-            [profileId, order_number, total_amount, discount_amount, coupon_id, finalAddressId, JSON.stringify(finalAddressSnapshot), subtotal, shipping_amount, 'paid']
+            `INSERT INTO orders (profile_id, order_number, total_amount, discount_amount, coupon_id, address_snapshot, subtotal, payment_status) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [profileId, order_number, total_amount, discount_amount, coupon_id, JSON.stringify(finalAddressSnapshot), subtotal, 'paid']
         );
         const order = orderResult.rows[0];
 
@@ -161,9 +185,11 @@ export const getAllOrdersForAdmin = async (req: any, res: Response) => {
         }
 
         const result = await pool.query(
-            `SELECT o.*, p.full_name, p.phone 
+            `SELECT o.*, 
+                    COALESCE(p.full_name, (o.address_snapshot->>'full_name')) as full_name, 
+                    COALESCE(p.phone, (o.address_snapshot->>'mobile_number')) as phone
              FROM orders o 
-             JOIN profiles p ON o.profile_id = p.id 
+             LEFT JOIN profiles p ON o.profile_id = p.id 
              ORDER BY o.created_at DESC`
         );
         res.json(result.rows);

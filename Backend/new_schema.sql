@@ -26,12 +26,9 @@ DROP TABLE IF EXISTS profiles CASCADE;
 CREATE TABLE profiles (
     id          SERIAL PRIMARY KEY,
     full_name   VARCHAR(200),
-    first_name  VARCHAR(100),
-    last_name   VARCHAR(100),
     email       VARCHAR(255) UNIQUE,
     phone       VARCHAR(20) UNIQUE NOT NULL,
     role        VARCHAR(20) DEFAULT 'customer',
-    is_verified BOOLEAN DEFAULT false,
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -165,14 +162,11 @@ CREATE TABLE orders (
     id                  SERIAL PRIMARY KEY,
     order_number        VARCHAR(100) UNIQUE NOT NULL,
     profile_id          INT REFERENCES profiles(id) ON DELETE SET NULL,
-    shipping_address_id INT REFERENCES addresses(id) ON DELETE SET NULL,
     address_snapshot    JSONB NOT NULL,
     coupon_id           INT REFERENCES coupons(id) ON DELETE SET NULL,
     subtotal            DECIMAL(10,2) NOT NULL,
-    shipping_amount     DECIMAL(10,2) DEFAULT 0,
     discount_amount     DECIMAL(10,2) DEFAULT 0,
     total_amount        DECIMAL(10,2) NOT NULL,
-    razorpay_order_id   VARCHAR(255),
     payment_status      VARCHAR(50) DEFAULT 'pending',
     fulfillment_status  VARCHAR(50) DEFAULT 'unfulfilled',
     created_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -198,8 +192,6 @@ CREATE TABLE order_items (
 CREATE TABLE payments (
     id                  SERIAL PRIMARY KEY,
     order_id            INT REFERENCES orders(id) ON DELETE CASCADE,
-    razorpay_payment_id VARCHAR(255) UNIQUE,
-    razorpay_signature  VARCHAR(255),
     payment_method      VARCHAR(50),
     amount              DECIMAL(10,2) NOT NULL,
     status              VARCHAR(50) DEFAULT 'captured',
@@ -238,8 +230,8 @@ CREATE TABLE report_test_results (
 -- =============================================================
 
 -- Admin profile
-INSERT INTO profiles (full_name, first_name, last_name, phone, role, is_verified)
-VALUES ('Ayush Admin', 'Ayush', 'Admin', '9999999999', 'admin', true);
+INSERT INTO profiles (full_name, email, phone, role)
+VALUES ('Ayush Admin', 'admin@wellforged.in', '9999999999', 'admin');
 
 -- Category
 INSERT INTO categories (name, slug, description)
@@ -330,6 +322,8 @@ SELECT id, test_name, test_value, unit, pass_status FROM report_batches, (VALUES
 ) AS data(test_name, test_value, unit, pass_status)
 WHERE report_batches.batch_number = 'WF2026011501';
 
--- Demo Coupon
-INSERT INTO coupons (code, discount_type, discount_value, min_order_value, expires_at, is_active)
-VALUES ('WELLFORGED10', 'percentage', 10.00, 300.00, '2027-01-01 00:00:00+05:30', true);
+-- Demo Coupons
+INSERT INTO coupons (code, discount_type, discount_value, min_order_value, expires_at, is_active) VALUES 
+('Welcome20', 'fixed', 20.00, 300.00, '2026-12-31 23:59:59+05:30', true),
+('Welcome30', 'fixed', 30.00, 500.00, '2026-12-31 23:59:59+05:30', true),
+('Welcome50', 'fixed', 50.00, 800.00, '2026-12-31 23:59:59+05:30', true);

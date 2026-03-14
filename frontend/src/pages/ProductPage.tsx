@@ -53,16 +53,18 @@ const ProductPage = () => {
         }, 800);
     };
 
-    // Images fallback logic
+    // Images fallback logic - Merge local high-trust carousel images with any backend shots
+    const carouselImages = [productImage1, productImage2, productImage3, productImage4, productImage5];
     const backendImages = product?.images?.map((img: any) => img.image_url) || [];
-    const productImages = backendImages.length > 0 ? backendImages : [productImage1, productImage2, productImage3, productImage4, productImage5];
+    // Prioritize the high-quality carousel but include backend if available
+    const productImages = [...carouselImages, ...backendImages].filter((v, i, a) => a.indexOf(v) === i);
 
     const startAutoPlay = useCallback(() => {
         if (autoPlayRef.current) clearInterval(autoPlayRef.current);
         if (productImages.length <= 1) return;
         autoPlayRef.current = setInterval(() => {
             setCurrentImageIndex((prev) => (prev + 1) % productImages.length);
-        }, 4000);
+        }, 3000); // 3 seconds for better engagement
     }, [productImages.length]);
 
     useEffect(() => {
@@ -167,18 +169,31 @@ const ProductPage = () => {
                 </script>
             </Helmet>
             <Navbar />
-            <main className="min-h-screen bg-background page-pt">
-                <section className="py-[var(--space-sm)]">
+            <main className="min-h-screen bg-background pt-16 sm:pt-20">
+                <section className="py-2">
                     <div className="max-w-[1440px] mx-auto px-[var(--space-sm)] lg:px-[var(--space-md)]">
                         <div className="grid lg:grid-cols-2 gap-[var(--space-md)] lg:gap-[var(--space-xl)]">
                             <div className="lg:sticky lg:top-24 lg:self-start">
                                 <ScrollReveal animation="fade-right">
                                     <div
-                                        className="relative w-full max-w-[420px] sm:max-w-[500px] lg:max-w-full mx-auto select-none"
+                                        className="relative w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[580px] mx-auto select-none"
                                         onTouchStart={onTouchStart}
                                         onTouchEnd={onTouchEnd}
                                     >
-                                        <div className="aspect-square sm:aspect-[4/5] overflow-hidden rounded-2xl bg-[#f6f8f5]">
+                                        <div className="aspect-square sm:aspect-[1/1] overflow-hidden rounded-2xl bg-[#f6f8f5] shadow-inner relative group">
+                                            {/* Navigation Arrows */}
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                                                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
+                                            >
+                                                <ChevronLeft className="h-4 w-4 text-foreground" />
+                                            </button>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
+                                            >
+                                                <ChevronRight className="h-4 w-4 text-foreground" />
+                                            </button>
                                             <div
                                                 className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
                                                 style={{ transform: `translateX(-${currentImageIndex * (100 / productImages.length)}%)`, width: `${productImages.length * 100}%` }}
@@ -218,23 +233,14 @@ const ProductPage = () => {
                             </div>
                             <div className="space-y-4 sm:space-y-5 lg:space-y-6">
                                 <ScrollReveal animation="fade-left">
-                                    <div className="space-y-[var(--space-xs)]">
-                                        <h1 className="font-display font-semibold text-foreground leading-[1.1]" style={{ fontSize: "var(--text-4xl)" }}>{product?.name || 'WellForged – Moringa Powder'}</h1>
-                                        <p className="font-body text-muted-foreground leading-relaxed" style={{ fontSize: "var(--text-base)" }}>{product?.base_description || "Pure, nutrient-rich moringa powder—lab tested, no fillers, nothing hidden. Just nature's most powerful green, delivered fresh."}</p>
+                                    <div className="space-y-1.5 mb-2">
+                                        <h1 className="font-display font-semibold text-foreground leading-tight" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>{product?.name || 'WellForged – Moringa Powder'}</h1>
+                                        <p className="font-body text-muted-foreground leading-relaxed" style={{ fontSize: "var(--text-sm)" }}>{product?.base_description || "Pure, nutrient-rich moringa powder—lab tested, no fillers, nothing hidden. Just nature's most powerful green, delivered fresh."}</p>
                                     </div>
                                 </ScrollReveal>
+
                                 <ScrollReveal animation="fade-up">
-                                    <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                                        {trustHighlights.map(({ icon: Icon, label }) => (
-                                            <div key={label} className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 bg-secondary/50 rounded-lg sm:rounded-xl transition-all duration-200 hover:bg-secondary/70">
-                                                <div className="h-6 w-6 sm:h-8 sm:w-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0"><Icon className="h-3 w-3 sm:h-4 sm:w-4 text-primary" /></div>
-                                                <span className="font-body text-[10px] sm:text-xs text-foreground font-medium leading-tight">{label}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </ScrollReveal>
-                                <ScrollReveal animation="fade-up">
-                                    <div className="bg-card rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 border border-gold/10 shadow-gold group">
+                                    <div className="bg-card rounded-xl p-3 sm:p-4 border border-gold/10 shadow-gold group">
                                         <ProductSelector product={product} />
                                     </div>
                                 </ScrollReveal>

@@ -31,7 +31,8 @@ interface Order {
     payment_status: string;
     created_at: string;
     address_snapshot: any;
-    user_email?: string;
+    full_name?: string;
+    phone?: string;
 }
 
 interface TestResult {
@@ -240,6 +241,7 @@ const AdminDashboard = () => {
                                     <thead>
                                         <tr className="bg-muted/10">
                                             <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Order ID</th>
+                                            <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Customer</th>
                                             <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Date</th>
                                             <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Amount</th>
                                             <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Status</th>
@@ -255,7 +257,11 @@ const AdminDashboard = () => {
                                             orders.map((order) => (
                                                 <tr key={order.id} className="hover:bg-muted/10 transition-colors">
                                                     <td className="px-6 py-4">
-                                                        <div className="font-mono text-xs text-foreground uppercase tracking-tighter">{order.id.slice(0, 13)}...</div>
+                                                        <div className="font-mono text-xs text-foreground uppercase tracking-tighter">{order.id.toString().slice(0, 13)}...</div>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        <div className="font-body text-sm font-semibold text-foreground">{order.full_name || "Guest User"}</div>
+                                                        <div className="font-body text-[10px] text-muted-foreground">{order.phone || "No Phone"}</div>
                                                     </td>
                                                     <td className="px-6 py-4 font-body text-sm text-foreground">
                                                         {new Date(order.created_at).toLocaleDateString()}

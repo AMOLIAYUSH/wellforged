@@ -8,10 +8,9 @@ export const validateCoupon = async (req: Request, res: Response) => {
         // Find coupon by code
         const couponResult = await pool.query(
             `SELECT * FROM coupons 
-             WHERE code = $1 
+             WHERE UPPER(code) = UPPER($1) 
              AND is_active = true 
-             AND (valid_from IS NULL OR valid_from <= CURRENT_TIMESTAMP) 
-             AND (valid_till IS NULL OR valid_till >= CURRENT_TIMESTAMP)`,
+             AND (expires_at IS NULL OR expires_at >= CURRENT_TIMESTAMP)`,
             [code]
         );
 
@@ -43,7 +42,7 @@ export const validateCoupon = async (req: Request, res: Response) => {
         // Calculate discount
         let discount_amount = 0;
         if (coupon.discount_type === 'percentage') {
-            discount_amount = (subtotal * coupon.discount_percentage) / 100;
+            discount_amount = (subtotal * coupon.discount_value) / 100;
 
             // Apply max discount limit
             if (coupon.max_discount_amount && discount_amount > coupon.max_discount_amount) {
@@ -58,7 +57,7 @@ export const validateCoupon = async (req: Request, res: Response) => {
             coupon_id: coupon.id,
             code: coupon.code,
             discount_type: coupon.discount_type,
-            discount_amount: parseFloat(discount_amount.toFixed(2)),
+            discount_amount: parseFloat(Number(discount_amount).toFixed(2)),
             message: 'Coupon applied successfully'
         });
     } catch (error: any) {

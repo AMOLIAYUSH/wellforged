@@ -6,7 +6,7 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 
 const ManifestoHero = () => {
   const [visibleWords, setVisibleWords] = useState(0);
-  const words = ["Proof", "is", "the", "New", "Standard."];
+  const words = ["Wellness,", "Forged", "with", "Integrity."];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -36,13 +36,13 @@ const ManifestoHero = () => {
 
         <div className="animate-hero-fade-up mb-[var(--space-sm)]">
           <span className="inline-block font-body text-[var(--text-xs)] lg:text-[var(--text-sm)] font-semibold uppercase tracking-[0.15em] text-primary bg-primary/5 border border-primary/10 px-4 py-2 rounded-full">
-            The No - Nonsense Supplement Brand
+            The New Standard of Radical Transparency
           </span>
         </div>
 
-        <h1 className="font-display font-semibold text-foreground leading-[1.1] sm:leading-[1.05] mb-[var(--space-md)]" style={{ fontSize: "var(--text-6xl)", textWrap: "balance" } as React.CSSProperties}>
+        <h1 className="font-display font-semibold text-foreground leading-[1.2] sm:leading-[1.1] mb-[var(--space-md)]" style={{ fontSize: "var(--text-6xl)", textWrap: "balance" } as React.CSSProperties}>
           {words.map((word, index) => (
-            <span key={index} className={`inline-block transition-all duration-700 mr-[0.25em] last:mr-0 ${index < visibleWords ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${word === "Standard." ? "text-gold-gradient drop-shadow-sm" : ""}`} style={{ transitionDelay: `${index * 150}ms` }}>
+            <span key={index} className={`inline-block transition-all duration-700 mr-[0.25em] last:mr-0 py-1 ${index < visibleWords ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${word === "Integrity." ? "text-gold-gradient drop-shadow-sm" : ""}`} style={{ transitionDelay: `${index * 150}ms` }}>
               {word}
             </span>
           ))}
@@ -50,7 +50,7 @@ const ManifestoHero = () => {
 
         <div className="animate-hero-fade-up-delay-3 max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto">
           <p className="font-body text-[var(--text-base)] sm:text-[var(--text-lg)] text-muted-foreground leading-relaxed mb-[var(--space-lg)]">
-            Most brands ask for your trust. <span className="text-foreground font-semibold">We provide the evidence.</span> Access third-party lab results for the specific bottle in your hand.
+            Most brands ask for your trust. <span className="text-foreground font-semibold">We provide the proof.</span> Welcome to the new standard of radical transparency in wellness.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-[var(--space-sm)]">

@@ -21,9 +21,8 @@ const CheckoutPage = () => {
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   // Calculate amounts
-  const shipping = subtotal >= 500 ? 0 : 49;
   const discount = appliedCoupon?.discount_amount || 0;
-  const total = subtotal - discount + shipping;
+  const total = subtotal - discount;
 
   // Step management (1 = Details, 2 = Summary & Place Order)
   const [step, setStep] = useState(1);
@@ -31,6 +30,7 @@ const CheckoutPage = () => {
   // Form data - completely empty/neutral
   const [formData, setFormData] = useState({
     fullName: "",
+    email: "",
     phone: "",
     address: "",
     pincode: "",
@@ -83,7 +83,7 @@ const CheckoutPage = () => {
   };
 
   const handleContinue = () => {
-    if (!formData.fullName || !formData.phone || !formData.address || !formData.pincode || !formData.city || !formData.state) {
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.address || !formData.pincode || !formData.city || !formData.state) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -99,6 +99,7 @@ const CheckoutPage = () => {
         idempotency_key: idempotencyKey,
         guest_details: {
           full_name: formData.fullName,
+          email: formData.email,
           mobile_number: formData.phone,
           address_line1: formData.address,
           city: formData.city,
@@ -162,6 +163,10 @@ const CheckoutPage = () => {
                         <Input name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Enter your full name" className="h-[var(--space-xl)]" />
                       </div>
                       <div>
+                        <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">Email Address *</label>
+                        <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="ayush@example.com" className="h-[var(--space-xl)]" />
+                      </div>
+                      <div>
                         <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">Phone Number *</label>
                         <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="+91 98765 43210" className="h-[var(--space-xl)]" />
                       </div>
@@ -204,7 +209,7 @@ const CheckoutPage = () => {
                         <p className="font-body text-foreground"><span className="font-semibold">{formData.fullName}</span></p>
                         <p className="font-body text-muted-foreground">{formData.address}</p>
                         <p className="font-body text-muted-foreground">{formData.city}, {formData.state} - {formData.pincode}</p>
-                        <p className="font-body text-muted-foreground">Phone: {formData.phone}</p>
+                        <p className="font-body text-muted-foreground">Phone: {formData.phone} | Email: {formData.email}</p>
                       </div>
                     </div>
 
@@ -307,7 +312,7 @@ const CheckoutPage = () => {
                     )}
                     <div className="flex justify-between items-center font-body text-sm">
                       <span className="text-muted-foreground font-medium">Delivery</span>
-                      <span className={shipping === 0 ? "text-primary font-bold" : "text-foreground font-bold"}>{shipping === 0 ? "FREE" : `₹${shipping}`}</span>
+                      <span className="text-primary font-bold">FREE</span>
                     </div>
                     <div className="flex justify-between items-center font-display text-lg font-bold pt-3 border-t border-border mt-1">
                       <span className="text-foreground uppercase tracking-wider">Total</span>
