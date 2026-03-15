@@ -2,10 +2,12 @@ import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import ManifestoHero from "@/components/ManifestoHero";
 import IntegrityPillars from "@/components/IntegrityPillars";
+import TrustComparison from "@/components/TrustComparison";
 import WhyWeExist from "@/components/WhyWeExist";
 import TamilNaduTerroir from "@/components/TamilNaduTerroir";
 import NABLVerification from "@/components/NABLVerification";
 import ProcessTimeline from "@/components/ProcessTimeline";
+import VerifiedReviews from "@/components/VerifiedReviews";
 import ManifestoCTA from "@/components/ManifestoCTA";
 import Footer from "@/components/Footer";
 import StickyBuyButton from "@/components/StickyBuyButton";
@@ -22,10 +24,12 @@ const Index = () => {
                 <Navbar />
                 <ManifestoHero />
                 <IntegrityPillars />
+                <TrustComparison />
                 <WhyWeExist />
                 <TamilNaduTerroir />
                 <NABLVerification />
                 <ProcessTimeline />
+                <VerifiedReviews />
                 <ManifestoCTA />
                 <Footer />
                 <StickyBuyButton />

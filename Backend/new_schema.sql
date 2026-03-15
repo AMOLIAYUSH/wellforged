@@ -250,7 +250,7 @@ VALUES (
 -- SKUs / Variants
 INSERT INTO skus (product_id, sku_code, label, price, original_price, stock) VALUES
 ((SELECT id FROM products WHERE slug='moringa-powder'), 'WF-MOR-100', '100g Pouch', 349.00, 499.00, 150),
-((SELECT id FROM products WHERE slug='moringa-powder'), 'WF-MOR-250', '250g Jar',   649.00, 899.00, 80);
+((SELECT id FROM products WHERE slug='moringa-powder'), 'WF-MOR-250', '250g Jar',   549.00, 899.00, 80);
 
 -- Product Image
 INSERT INTO product_images (product_id, image_url, is_main, display_order)

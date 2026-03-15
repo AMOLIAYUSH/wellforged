@@ -40,14 +40,25 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* RIGHT SECTION: Cart only */}
+          {/* RIGHT SECTION: Transparency + Cart */}
           <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4">
+            <button
+              onClick={() => {
+                navigate("/transparency");
+                window.scrollTo(0, 0);
+              }}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 group"
+            >
+              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">Verify Batch</span>
+            </button>
+
             <button
               className="relative p-2.5 hover:bg-muted rounded-full transition-all duration-300 flex items-center justify-center group"
               onClick={() => setCartOpen(true)}
               aria-label={`Cart with ${totalItems} items`}
             >
-              <ShoppingCart className="h-4 w-5 text-foreground group-hover:text-primary transition-colors" />
+              <ShoppingCart className="h-5 w-5 text-foreground group-hover:text-primary transition-colors" />
               {totalItems > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center animate-in zoom-in duration-300">
                   {totalItems > 99 ? "99+" : totalItems}

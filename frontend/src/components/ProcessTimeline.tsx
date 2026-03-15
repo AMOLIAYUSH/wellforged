@@ -4,7 +4,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 const steps = [
   { number: "01", title: "Sourcing", subtitle: "Single-Origin Selection", description: "We partner with carefully vetted farms in regions known for optimal growing conditions. Every ingredient is traceable to its exact origin.", icon: MapPin },
-  { number: "02", title: "Forging", subtitle: "Independent NABL Testing", description: "Every batch undergoes rigorous third-party laboratory testing. We verify purity, potency, and safety before any product reaches you.", icon: FlaskConical },
+  { number: "02", title: "Forging", subtitle: "Cold-Processed Integrity", description: "Unlike heat-treated products, we process below 40°C to preserve 100% of heat-sensitive nutrients and chlorophyll. Lab-verified for maximum bio-availability.", icon: FlaskConical },
   { number: "03", title: "Transparency", subtitle: "Real-Time Batch Reporting", description: "Scan your product's batch code to access complete lab results instantly. No hidden data. No gatekeeping. Full disclosure.", icon: FileSearch },
 ];
 
