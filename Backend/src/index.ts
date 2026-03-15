@@ -1,6 +1,6 @@
 import express, { type Application, type Request, type Response } from "express";
 import cors from "cors";
-import helmet from "helmet";
+import helmetModule from "helmet";
 import { rateLimit } from "express-rate-limit";
 import dotenv from "dotenv";
 import morgan from "morgan";
@@ -22,6 +22,7 @@ dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
+const helmet = helmetModule as unknown as () => express.RequestHandler;
 
 
 // ---------------- RATE LIMITERS ----------------
