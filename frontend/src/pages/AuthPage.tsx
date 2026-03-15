@@ -232,10 +232,10 @@ const AuthPage = () => {
 
                     {/* Middle: Trust points */}
                     <div className="relative z-10 space-y-3 my-8">
-                        {TRUST_POINTS.map(({ icon: Icon, label }) => (
+                        {TRUST_POINTS.map(({ icon: Icon, label }, idx) => (
                             <div key={label} className="flex items-center gap-3 group">
                                 <div className="h-8 w-8 rounded-lg bg-white/8 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-white/15 transition-all">
-                                    <Icon className="h-3.5 w-3.5 text-emerald-400" />
+                                    <Icon className={`h-3.5 w-3.5 ${idx === 3 ? 'text-gold' : 'text-emerald-400'}`} />
                                 </div>
                                 <span className="text-sm text-white/65 group-hover:text-white/90 transition-colors">{label}</span>
                             </div>

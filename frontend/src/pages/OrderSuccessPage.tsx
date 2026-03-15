@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CheckCircle, ArrowRight, ShoppingBag, Shield, Gift } from "lucide-react";
+import { CheckCircle, ArrowRight, Shield, Truck, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Confetti from "react-confetti";
 import { useEffect, useState } from "react";
@@ -35,20 +35,17 @@ const OrderSuccessPage = () => {
 
                     <div className="grid sm:grid-cols-2 gap-4 mb-12 animate-hero-fade-up-delay-3">
                         <div className="bg-card p-6 rounded-2xl border border-border text-left">
-                            <Shield className="h-6 w-6 text-primary mb-3" />
-                            <h3 className="font-display text-lg font-semibold text-foreground mb-2">Track Your Purity</h3>
-                            <p className="font-body text-sm text-muted-foreground mb-4">
-                                Once your order arrives, scan the QR code to see the exact lab report for your bottle.
+                            <Truck className="h-6 w-6 text-primary mb-3" />
+                            <h3 className="font-display text-lg font-semibold text-foreground mb-2">Delivery Update</h3>
+                            <p className="font-body text-sm text-muted-foreground mb-0">
+                                Standard delivery time is 5-7 business days. You will receive an SMS and email shortly with order details and tracking information.
                             </p>
-                            <Link to="/transparency">
-                                <Button variant="link" className="p-0 h-auto text-primary font-bold">Explore Reports <ArrowRight className="h-4 w-4 ml-1" /></Button>
-                            </Link>
                         </div>
                         <div className="bg-card p-6 rounded-2xl border border-border text-left">
-                            <ShoppingBag className="h-6 w-6 text-primary mb-3" />
-                            <h3 className="font-display text-lg font-semibold text-foreground mb-2">What's Next?</h3>
-                            <p className="font-body text-sm text-muted-foreground mb-4">
-                                You'll receive an SMS with tracking details within 24 hours. Your wellness journey starts here.
+                            <Shield className="h-6 w-6 text-primary mb-3" />
+                            <h3 className="font-display text-lg font-semibold text-foreground mb-2">Radical Transparency</h3>
+                            <p className="font-body text-sm text-muted-foreground mb-0">
+                                Once your order arrives, scan the QR code on the pouch to access the NABL lab reports for your specific batch.
                             </p>
                         </div>
                     </div>

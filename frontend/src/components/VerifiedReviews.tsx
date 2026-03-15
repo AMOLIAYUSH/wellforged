@@ -1,9 +1,22 @@
 import { useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Star, CheckCircle2, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import ScrollReveal from "./ScrollReveal";
+import { API_BASE_URL } from "@/config";
 
-const reviews = [
+interface Review {
+    name?: string;
+    user_name?: string;
+    location?: string;
+    rating: number;
+    text?: string;
+    comment?: string;
+    highlight: string;
+    is_verified?: boolean;
+}
+
+const STATIC_REVIEWS: Review[] = [
     {
         name: "Dr. Ananya S.",
         location: "Bengaluru",
@@ -35,6 +48,23 @@ const reviews = [
 ];
 
 const VerifiedReviews = () => {
+    const { data: dynamicReviews } = useQuery<Review[]>({
+        queryKey: ['reviews', 'moringa-powder'],
+        queryFn: async () => {
+            const res = await fetch(`${API_BASE_URL}/api/reviews?slug=moringa-powder`);
+            if (!res.ok) throw new Error('Failed to fetch reviews');
+            const data = await res.json();
+            // Map 'name' to 'user_name' and 'text' to 'comment' if they exist in the fetched data
+            return data.map((review: any) => ({
+                ...review,
+                user_name: review.user_name || review.name,
+                comment: review.comment || review.text,
+            }));
+        }
+    });
+
+    const reviews = (dynamicReviews && dynamicReviews.length > 0) ? dynamicReviews : STATIC_REVIEWS;
+
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
         align: "start",
@@ -66,7 +96,7 @@ const VerifiedReviews = () => {
                     </h2>
                     <div className="flex items-center justify-center gap-1.5 mb-2">
                         {[1, 2, 3, 4, 5].map(i => (
-                            <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                            <Star key={i} className="h-4 w-4 fill-gold text-gold" />
                         ))}
                         <span className="ml-2 font-display text-lg font-bold text-foreground">4.9 / 5.0</span>
                     </div>
@@ -85,7 +115,7 @@ const VerifiedReviews = () => {
 
                                         <div className="flex items-center gap-1 mb-4">
                                             {[1, 2, 3, 4, 5].map(i => (
-                                                <Star key={i} className={`h-3 w-3 ${i <= review.rating ? 'fill-primary text-primary' : 'text-muted-foreground/30'}`} />
+                                                <Star key={i} className={`h-3 w-3 ${i <= review.rating ? 'fill-gold text-gold' : 'text-muted-foreground/30'}`} />
                                             ))}
                                         </div>
 
@@ -94,19 +124,21 @@ const VerifiedReviews = () => {
                                         </p>
 
                                         <p className="font-body text-muted-foreground leading-relaxed italic mb-8 flex-1 line-clamp-4" style={{ fontSize: "var(--text-sm)" }}>
-                                            "{review.text}"
+                                            "{review.comment || review.text}"
                                         </p>
 
                                         <div className="pt-6 border-t border-border/50 mt-auto">
                                             <div className="flex items-center justify-between">
                                                 <div>
-                                                    <p className="font-display font-bold text-foreground leading-none mb-1">{review.name}</p>
-                                                    <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground">{review.location}</p>
+                                                    <p className="font-display font-bold text-foreground leading-none mb-1">{review.user_name || review.name}</p>
+                                                    <p className="font-body text-[10px] uppercase tracking-widest text-muted-foreground">{review.location || 'Verified Buyer'}</p>
                                                 </div>
-                                                <div className="flex items-center gap-1.5 px-2 py-1 bg-primary/10 rounded-full">
-                                                    <CheckCircle2 className="h-3 w-3 text-primary" />
-                                                    <span className="font-body text-[9px] font-bold text-primary uppercase tracking-tighter">Verified Purchase</span>
-                                                </div>
+                                                {(review.is_verified ?? true) && (
+                                                    <div className="flex items-center gap-1.5 px-2 py-1 bg-primary/10 rounded-full">
+                                                        <CheckCircle2 className="h-3 w-3 text-primary" />
+                                                        <span className="font-body text-[9px] font-bold text-primary uppercase tracking-tighter">Verified Purchase</span>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

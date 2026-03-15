@@ -164,11 +164,11 @@ const CheckoutPage = () => {
                       </div>
                       <div>
                         <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">Email Address *</label>
-                        <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="ayush@example.com" className="h-[var(--space-xl)]" />
+                        <Input name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="yourname@domain.com" className="h-[var(--space-xl)]" />
                       </div>
                       <div>
                         <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">Phone Number *</label>
-                        <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="+91 98765 43210" className="h-[var(--space-xl)]" />
+                        <Input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="10-digit mobile number" className="h-[var(--space-xl)]" />
                       </div>
                       <div>
                         <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">Address *</label>
@@ -177,16 +177,16 @@ const CheckoutPage = () => {
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">Pincode *</label>
-                          <Input name="pincode" value={formData.pincode} onChange={handleInputChange} placeholder="400001" className="h-[var(--space-xl)]" />
+                          <Input name="pincode" value={formData.pincode} onChange={handleInputChange} placeholder="6-digit pincode" className="h-[var(--space-xl)]" />
                         </div>
                         <div>
                           <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">City *</label>
-                          <Input name="city" value={formData.city} onChange={handleInputChange} placeholder="Mumbai" className="h-[var(--space-xl)]" />
+                          <Input name="city" value={formData.city} onChange={handleInputChange} placeholder="Enter city name" className="h-[var(--space-xl)]" />
                         </div>
                       </div>
                       <div>
                         <label className="font-body text-[var(--text-xs)] font-bold uppercase tracking-widest text-foreground mb-1.5 block">State *</label>
-                        <Input name="state" value={formData.state} onChange={handleInputChange} placeholder="Maharashtra" className="h-[var(--space-xl)]" />
+                        <Input name="state" value={formData.state} onChange={handleInputChange} placeholder="Enter state name" className="h-[var(--space-xl)]" />
                       </div>
                     </div>
 
