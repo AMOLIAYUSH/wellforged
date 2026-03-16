@@ -268,7 +268,7 @@ const CheckoutPage = () => {
                             value={couponCode}
                             onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                             placeholder="Enter code"
-                            className="h-10 text-sm"
+                            className="h-10 text-base md:text-sm"
                             disabled={isValidatingCoupon}
                           />
                           <Button
