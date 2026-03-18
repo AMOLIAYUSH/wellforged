@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 import productImage from "@/assets/Packaging_Updated.png";
+import type { ProductData, ProductVariant } from "@/types/store";
 
-const ProductSelector = ({ product }: { product: any }) => {
-  const [selectedSku, setSelectedSku] = useState<any>(null);
-  const { addItem, totalItems, setIsOpen } = useCart();
+const ProductSelector = ({ product }: { product: ProductData }) => {
+  const [selectedSku, setSelectedSku] = useState<ProductVariant | null>(null);
+  const { addItem, setIsOpen } = useCart();
 
   useEffect(() => {
     if (product?.variants?.length > 0) {
-      const defaultSku = product.variants.find((sku: any) =>
+      const defaultSku = product.variants.find((sku) =>
         String(sku.label || sku.size || "").toLowerCase().includes("250"),
       );
       setSelectedSku(defaultSku || product.variants[0]);
@@ -31,8 +32,8 @@ const ProductSelector = ({ product }: { product: any }) => {
         id: selectedSku.id.toString(),
         name: product.name,
         size: selectedSku.label.replace(/\s+(Pouch|Jar)$/i, ""),
-        price: selectedSku.price,
-        originalPrice: selectedSku.original_price,
+        price: Number(selectedSku.price),
+        originalPrice: selectedSku.original_price ? Number(selectedSku.original_price) : undefined,
         image: product.images?.[0]?.image_url || productImage,
       },
       1,
@@ -61,12 +62,12 @@ const ProductSelector = ({ product }: { product: any }) => {
           </div>
 
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            {product.variants.map((sku: any) => {
+            {product.variants.map((sku) => {
               const sizeLabel = sku.label.replace(/\s+(Pouch|Jar)$/i, "");
               const stockLabel =
-                sku.stock === 0 ? "Out of Stock" : sku.stock < 20 ? `Only ${sku.stock} left` : "In Stock";
-              const stockTone = sku.stock === 0 ? "text-destructive" : sku.stock < 20 ? "text-gold" : "text-primary";
-              const variantSavings = sku.original_price ? sku.original_price - sku.price : 0;
+                sku.stock === 0 ? "Out of Stock" : (sku.stock ?? 0) < 20 ? `Only ${sku.stock} left` : "In Stock";
+              const stockTone = sku.stock === 0 ? "text-destructive" : (sku.stock ?? 0) < 20 ? "text-gold" : "text-primary";
+              const variantSavings = sku.original_price ? Number(sku.original_price) - Number(sku.price) : 0;
 
               return (
                 <button
@@ -94,7 +95,7 @@ const ProductSelector = ({ product }: { product: any }) => {
 
                   <div className="mt-4">
                     <div className="flex items-end gap-2">
-                      <span className={`font-display text-xl font-bold ${selectedSku.id === sku.id ? "text-primary" : "text-primary"}`}>Rs {sku.price}</span>
+                      <span className="font-display text-xl font-bold text-primary">Rs {sku.price}</span>
                       {sku.original_price && (
                         <span className={`pb-0.5 font-body text-xs line-through ${selectedSku.id === sku.id ? "text-primary/55" : "text-muted-foreground"}`}>Rs {sku.original_price}</span>
                       )}

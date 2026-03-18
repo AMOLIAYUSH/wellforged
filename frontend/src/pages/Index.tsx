@@ -1,16 +1,26 @@
+import { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import ManifestoHero from "@/components/ManifestoHero";
-import IntegrityPillars from "@/components/IntegrityPillars";
-import TrustComparison from "@/components/TrustComparison";
-import WhyWeExist from "@/components/WhyWeExist";
-import TamilNaduTerroir from "@/components/TamilNaduTerroir";
-import NABLVerification from "@/components/NABLVerification";
-import ProcessTimeline from "@/components/ProcessTimeline";
-import VerifiedReviews from "@/components/VerifiedReviews";
-import ManifestoCTA from "@/components/ManifestoCTA";
 import Footer from "@/components/Footer";
 import StickyBuyButton from "@/components/StickyBuyButton";
+
+const TrustComparison = lazy(() => import("@/components/TrustComparison"));
+const NABLVerification = lazy(() => import("@/components/NABLVerification"));
+const IntegrityPillars = lazy(() => import("@/components/IntegrityPillars"));
+const ProcessTimeline = lazy(() => import("@/components/ProcessTimeline"));
+const TamilNaduTerroir = lazy(() => import("@/components/TamilNaduTerroir"));
+const WhyWeExist = lazy(() => import("@/components/WhyWeExist"));
+const VerifiedReviews = lazy(() => import("@/components/VerifiedReviews"));
+const ManifestoCTA = lazy(() => import("@/components/ManifestoCTA"));
+
+const SectionFallback = () => (
+    <div className="section-padding bg-background">
+        <div className="mx-auto max-w-6xl">
+            <div className="premium-panel h-56 animate-pulse bg-secondary/50" />
+        </div>
+    </div>
+);
 
 const Index = () => {
     return (
@@ -23,14 +33,16 @@ const Index = () => {
             <main className="min-h-screen page-pt">
                 <Navbar />
                 <ManifestoHero />
-                <IntegrityPillars />
-                <TrustComparison />
-                <WhyWeExist />
-                <TamilNaduTerroir />
-                <NABLVerification />
-                <ProcessTimeline />
-                <VerifiedReviews />
-                <ManifestoCTA />
+                <Suspense fallback={<SectionFallback />}>
+                    <TrustComparison />
+                    <NABLVerification />
+                    <IntegrityPillars />
+                    <ProcessTimeline />
+                    <TamilNaduTerroir />
+                    <WhyWeExist />
+                    <VerifiedReviews />
+                    <ManifestoCTA />
+                </Suspense>
                 <Footer />
                 <StickyBuyButton />
             </main>

@@ -4,7 +4,6 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Search, ArrowLeft, CheckCircle, XCircle, FileText, Beaker, Calendar, Package, Shield, Download, Share2, Loader2, Sparkles, Lock, Leaf, FlaskConical, Gift, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import { useAuth } from "@/context/AuthContext";
 import { API_BASE_URL } from "@/config";
 
 // Hardcoded data removed, fetching from backend instead
@@ -26,7 +25,6 @@ const TransparencyPage = () => {
   const [loadingStep, setLoadingStep] = useState(0);
   const [showScorecard, setShowScorecard] = useState(false);
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const { token } = useAuth();
   const [searchParams] = useSearchParams();
   const [latestBatchFetched, setLatestBatchFetched] = useState(false);
 
@@ -122,11 +120,7 @@ const TransparencyPage = () => {
     }, 800);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/inventory/batch-report?batch_number=${trimmedBatch}`, {
-        headers: {
-          ...(token ? { "Authorization": `Bearer ${token}` } : {})
-        }
-      });
+      const response = await fetch(`${API_BASE_URL}/api/inventory/batch-report?batch_number=${trimmedBatch}`);
       const data = await response.json();
 
       // Artificial delay to show the "Forge" animations as requested by the premium design
