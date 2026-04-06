@@ -192,7 +192,7 @@ const buildOrderStatusEmail = (
     return { subject, htmlContent, textContent };
 };
 
-export class MailerService {
+class MailerService {
     static isConfigured(): boolean {
         return isBrevoConfigured;
     }
