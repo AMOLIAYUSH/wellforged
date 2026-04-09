@@ -3,8 +3,8 @@ import { ShoppingCart, ShoppingBag, Truck, Shield, FlaskConical, Sparkles, Check
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
-import productImage from "@/assets/Packaging_Updated.png";
 import type { ProductData, ProductVariant } from "@/types/store";
+import { DEFAULT_PRODUCT_IMAGE } from "@/utils/images";
 
 const ProductSelector = ({ product }: { product: ProductData }) => {
   const [selectedSku, setSelectedSku] = useState<ProductVariant | null>(null);
@@ -34,7 +34,7 @@ const ProductSelector = ({ product }: { product: ProductData }) => {
         size: selectedSku.label.replace(/\s+(Pouch|Jar)$/i, ""),
         price: Number(selectedSku.price),
         originalPrice: selectedSku.original_price ? Number(selectedSku.original_price) : undefined,
-        image: product.images?.[0]?.image_url || productImage,
+        image: DEFAULT_PRODUCT_IMAGE,
       },
       1,
     );

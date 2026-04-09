@@ -14,6 +14,7 @@ import productImage2 from "@/assets/product-carousel-2.jpg";
 import productImage3 from "@/assets/product-carousel-3.jpg";
 import productImage4 from "@/assets/product-carousel-4.jpg";
 import productImage5 from "@/assets/product-carousel-5.jpg";
+import { imageErrorFallback } from "@/utils/images";
 
 interface TechnicalSpecDetail {
   label: string;
@@ -64,8 +65,7 @@ const ProductPage = () => {
   };
 
   const carouselImages = [productImage1, productImage2, productImage3, productImage4, productImage5];
-  const backendImages = product?.images?.map((img) => img.image_url) || [];
-  const productImages = [...carouselImages, ...backendImages].filter((v, i, a) => a.indexOf(v) === i);
+  const productImages = carouselImages;
 
   const startAutoPlay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -228,6 +228,7 @@ const ProductPage = () => {
                               alt={`${product?.name || "Product"} - view ${i + 1}`}
                               loading={i === 0 ? "eager" : "lazy"}
                               className="h-full w-full object-contain p-6 sm:p-10"
+                              onError={imageErrorFallback}
                             />
                           </div>
                         ))}
@@ -246,7 +247,12 @@ const ProductPage = () => {
                             }`}
                           >
                             <div className="aspect-square bg-[#f6f8f5] p-1.5">
-                              <img src={img} alt={`${product?.name || "Product"} thumbnail ${i + 1}`} className="h-full w-full object-contain" />
+                              <img
+                                src={img}
+                                alt={`${product?.name || "Product"} thumbnail ${i + 1}`}
+                                className="h-full w-full object-contain"
+                                onError={imageErrorFallback}
+                              />
                             </div>
                           </button>
                         ))}
