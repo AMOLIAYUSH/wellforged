@@ -8,6 +8,7 @@ interface SEOProps {
   ogType?: "website" | "product";
   twitterHandle?: string;
   jsonLd?: Record<string, any> | Array<Record<string, any>>;
+  googleSiteVerification?: string;
 }
 
 const SEO = ({
@@ -18,6 +19,7 @@ const SEO = ({
   ogType = "website",
   twitterHandle = "@wellforged",
   jsonLd,
+  googleSiteVerification = "uUXT8EOkidxG6y1nmQDFnmQYk6xex_vD_qgqY-AunuQ",
 }: SEOProps) => {
   const siteName = "Wellforged";
   
@@ -54,6 +56,9 @@ const SEO = ({
       <title>{brandPrefixedTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonical} />
+      
+      {/* Google Search Console Verification */}
+      <meta name="google-site-verification" content={googleSiteVerification} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType} />
