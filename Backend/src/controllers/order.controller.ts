@@ -216,10 +216,12 @@ export const createOrder = async (req: any, res: Response) => {
                     order.order_number,
                     Number(total_amount),
                     itemsToProcess.map((item: any) => ({
-                        productName: item.product_name || 'WellForged Product',
+                        productName: item.product_name || 'Wellforged Product',
                         quantity: Number(item.quantity),
+                        price: Number(item.price),
                         variantLabel: item.label || null,
-                    }))
+                    })),
+                    '3-5 business days'
                 );
             } catch (emailError) {
                 console.error('Order email send failed:', emailError);
