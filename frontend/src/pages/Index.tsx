@@ -26,15 +26,19 @@ const Index = () => {
     return (
         <>
             <SEO 
-                title="WellForged | Wellness, Forged with Integrity"
-                description="Most brands ask for your trust. We provide the proof. Welcome to the new standard of radical transparency in wellness."
+                title="Radically Transparent Wellness Supplements"
+                description="Most brands ask for your trust. Wellforged provides the proof. Welcome to the new standard of radical transparency in pure, lab-tested wellness."
                 canonical="https://wellforged.in"
                 jsonLd={{
                     "@context": "https://schema.org",
-                    "@type": "Website",
+                    "@type": "WebSite",
                     "url": "https://wellforged.in",
-                    "name": "WellForged",
-                    "description": "Radical transparency in wellness. Verified lab reports for every batch."
+                    "name": "Wellforged",
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://wellforged.in/product?search={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
                 }}
             />
             <main className="min-h-screen page-pt">

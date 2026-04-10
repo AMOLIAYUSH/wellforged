@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import { useNavigate } from "react-router-dom";
 import { Check, Leaf, Shield, FlaskConical, QrCode, Globe, CheckCircle, ChevronLeft, ChevronRight, Sparkles, Clock3, HeartHandshake } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -165,18 +165,46 @@ const ProductPage = () => {
     );
   }
 
+  const productName = product?.name || "Pure Moringa Leaf Powder";
+  const productDescription = product?.base_description || "Wellforged Moringa Leaf Powder - Clean, single-ingredient moringa powder crafted with disciplined sourcing and verified lab quality.";
+  const canonicalUrl = `https://wellforged.in/product/${slug}`;
+
+  // SEO Rectification: Brand-First Title
+  const seoTitle = `${productName} | Clean Single-Ingredient Wellness`;
+
   return (
     <>
-      <Helmet>
-        <title>{product?.name || "WellForged Moringa Leaf Powder"} | Clean Single-Ingredient Wellness</title>
-        <meta
-          name="description"
-          content={
-            product?.base_description ||
-            "WellForged Moringa Leaf Powder - Clean, single-ingredient moringa powder crafted with disciplined sourcing, careful processing, and verified quality."
+      <SEO 
+        title={seoTitle}
+        description={productDescription}
+        canonical={canonicalUrl}
+        ogType="product"
+        ogImage="https://wellforged.in/assets/Packaging_Updated.png"
+        jsonLd={{
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": `Wellforged ${productName}`, // Explicit brand prefix in schema
+          "image": [
+            "https://wellforged.in/assets/product-carousel-1.jpg",
+            "https://wellforged.in/assets/Packaging_Updated.png"
+          ],
+          "description": productDescription,
+          "sku": slug,
+          "mpn": "WF-MOR-01",
+          "brand": {
+            "@type": "Brand",
+            "name": "Wellforged"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": canonicalUrl,
+            "priceCurrency": "INR",
+            "price": "499",
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition"
           }
-        />
-      </Helmet>
+        }}
+      />
 
       <Navbar />
       <main className="min-h-screen bg-background pb-20 pt-16 sm:pb-0 sm:pt-20">
@@ -225,7 +253,7 @@ const ProductPage = () => {
                           <div key={i} className="h-full flex-shrink-0" style={{ width: `${100 / productImages.length}%` }}>
                             <img
                               src={img}
-                              alt={`${product?.name || "Product"} - view ${i + 1}`}
+                              alt={`Wellforged ${product?.name || "Product"} - Detailed View ${i + 1}`}
                               loading={i === 0 ? "eager" : "lazy"}
                               className="h-full w-full object-contain p-6 sm:p-10"
                               onError={imageErrorFallback}
@@ -241,7 +269,7 @@ const ProductPage = () => {
                           <button
                             key={i}
                             onClick={() => goTo(i)}
-                            aria-label={`Product image ${i + 1}`}
+                            aria-label={`Wellforged product thumbnail ${i + 1}`}
                             className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
                               i === currentImageIndex ? "border-primary shadow-[0_12px_24px_-18px_hsl(var(--primary)/0.45)]" : "border-border/80 opacity-75 hover:opacity-100"
                             }`}
@@ -249,7 +277,7 @@ const ProductPage = () => {
                             <div className="aspect-square bg-[#f6f8f5] p-1.5">
                               <img
                                 src={img}
-                                alt={`${product?.name || "Product"} thumbnail ${i + 1}`}
+                                alt={`Wellforged ${product?.name || "Product"} Preview ${i + 1}`}
                                 className="h-full w-full object-contain"
                                 onError={imageErrorFallback}
                               />
@@ -265,9 +293,9 @@ const ProductPage = () => {
               <div className="space-y-4 sm:space-y-5 lg:space-y-6">
                 <ScrollReveal animation="fade-left">
                   <div className="mb-2 space-y-3">
-                    <span className="eyebrow-label">Single-Ingredient Wellness</span>
+                    <span className="eyebrow-label text-primary font-bold">Wellforged Standard</span>
                     <h1 className="font-display text-foreground" style={{ fontSize: "clamp(1.9rem, 5vw, 2.9rem)", lineHeight: 1.05 }}>
-                      {product?.name || "WellForged Moringa Powder"}
+                      {product?.name || "Pure Moringa Powder"}
                     </h1>
                     <p className="max-w-xl font-body text-muted-foreground" style={{ fontSize: "var(--text-base)", lineHeight: 1.72 }}>
                       {product?.base_description ||
@@ -446,7 +474,7 @@ const ProductPage = () => {
               <div className="space-y-4 text-center sm:space-y-6">
                 <p className="eyebrow-label text-center">Start Your Ritual</p>
                 <h2 className="section-title">Ready to Experience Clean Nutrition?</h2>
-                <p className="section-copy mx-auto max-w-2xl px-2">Join thousands who trust WellForged for their daily wellness routine.</p>
+                <p className="section-copy mx-auto max-w-2xl px-2">Join thousands who trust Wellforged for their daily wellness routine.</p>
                 <div className="flex justify-center">
                   <button
                     onClick={handleProcessTransition}
