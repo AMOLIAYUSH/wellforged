@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import ManifestoHero from "@/components/ManifestoHero";
 import Footer from "@/components/Footer";
@@ -25,11 +25,18 @@ const SectionFallback = () => (
 const Index = () => {
     return (
         <>
-            <Helmet>
-                <title>WellForged | Wellness, Forged with Integrity</title>
-                <meta name="description" content="Most brands ask for your trust. We provide the proof. Welcome to the new standard of radical transparency in wellness." />
-                <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet" />
-            </Helmet>
+            <SEO 
+                title="WellForged | Wellness, Forged with Integrity"
+                description="Most brands ask for your trust. We provide the proof. Welcome to the new standard of radical transparency in wellness."
+                canonical="https://wellforged.in"
+                jsonLd={{
+                    "@context": "https://schema.org",
+                    "@type": "Website",
+                    "url": "https://wellforged.in",
+                    "name": "WellForged",
+                    "description": "Radical transparency in wellness. Verified lab reports for every batch."
+                }}
+            />
             <main className="min-h-screen page-pt">
                 <Navbar />
                 <ManifestoHero />
