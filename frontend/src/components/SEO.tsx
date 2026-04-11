@@ -15,8 +15,8 @@ interface SEOProps {
 const SEO = ({
   title = "Wellforged | The No Nonsense Supplement Brand",
   description = "Pure ingredients, zero fillers, and absolute clarity. Wellforged is the no nonsense supplement brand built on integrity and evidence.",
-  canonical = "https://www.wellforged.in",
-  ogImage = "https://www.wellforged.in/assets/Packaging_Updated.png",
+  canonical = "/",
+  ogImage = "/Packaging_Updated.png",
   ogType = "website",
   twitterHandle = "@wellforged",
   jsonLd,
@@ -24,6 +24,13 @@ const SEO = ({
   noindex = false,
 }: SEOProps) => {
   const siteName = "Wellforged";
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const canonicalUrl = canonical.startsWith("http")
+    ? canonical
+    : `${origin}${canonical.startsWith("/") ? "" : "/"}${canonical}`;
+  const ogImageUrl = ogImage.startsWith("http")
+    ? ogImage
+    : `${origin}${ogImage.startsWith("/") ? "" : "/"}${ogImage}`;
   
   // BRAND-FIRST LOGIC: Ensure "Wellforged" is at the start of the title for brand queries
   const brandPrefixedTitle = title.startsWith(siteName) 
@@ -35,8 +42,8 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Wellforged",
-    "url": "https://www.wellforged.in",
-    "logo": "https://www.wellforged.in/assets/Transparent_logo.png",
+    "url": origin,
+    "logo": `${origin}/assets/brand/logo.png`,
     "sameAs": [
       "https://www.instagram.com/wellforged",
       "https://twitter.com/wellforged"
@@ -57,25 +64,25 @@ const SEO = ({
       {/* Basic Meta Tags */}
       <title>{brandPrefixedTitle}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={canonical} />
+      <link rel="canonical" href={canonicalUrl} />
       
       {/* Google Search Console Verification */}
       <meta name="google-site-verification" content={googleSiteVerification} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={canonical} />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={brandPrefixedTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={ogImage} />
+      <meta property="og:image" content={ogImageUrl} />
       <meta property="og:site_name" content={siteName} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={canonical} />
+      <meta name="twitter:url" content={canonicalUrl} />
       <meta name="twitter:title" content={brandPrefixedTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image" content={ogImageUrl} />
       {twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
 
       {/* Search Engine Directives */}

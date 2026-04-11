@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { Instagram, Twitter, Shield, CheckCircle } from "lucide-react";
-import wfLogo from "@/assets/Transparent_logo.png";
 
 const Footer = () => {
+  const logoSrc = "/assets/brand/logo.png";
   const quickLinks = [
+    { name: "About", href: "/about" },
     { name: "Products", href: "/product" },
     { name: "Transparency", href: "/transparency" },
     { name: "Contact Us", href: "/contact-us" },
@@ -24,7 +25,7 @@ const Footer = () => {
       <div className="mx-auto max-w-7xl px-[var(--space-sm)] py-[var(--space-md)] lg:px-[var(--space-md)] lg:py-[var(--space-lg)]">
         <div className="grid grid-cols-2 gap-6 text-left sm:gap-8 lg:grid-cols-4 lg:gap-12">
           <div className="col-span-2 flex flex-col items-center text-center lg:col-span-1 lg:items-start lg:text-left">
-            <img src={wfLogo} alt="WellForged Logo" className="mb-3 h-8 w-8 object-contain sm:h-10 sm:w-10" />
+            <img src={logoSrc} alt="WellForged Logo" className="mb-3 h-8 w-8 object-contain sm:h-10 sm:w-10" />
             <p className="font-display text-sm font-medium text-foreground sm:text-base">WellForged</p>
             <p className="mt-1 max-w-[18rem] font-body text-[11px] italic text-muted-foreground sm:text-xs">Wellness, Forged With Integrity</p>
             <div className="mt-4 flex items-center gap-[var(--space-xs)]">

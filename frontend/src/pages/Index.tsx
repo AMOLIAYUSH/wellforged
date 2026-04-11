@@ -28,15 +28,15 @@ const Index = () => {
             <SEO 
                 title="The No Nonsense Supplement Brand"
                 description="Pure, lab-tested wellness with zero fillers and absolute clarity. Wellforged is the no nonsense standard for those who demand integrity in every serving."
-                canonical="https://www.wellforged.in"
+                canonical="/"
                 jsonLd={{
                     "@context": "https://schema.org",
                     "@type": "WebSite",
-                    "url": "https://www.wellforged.in",
+                    "url": "/",
                     "name": "Wellforged",
                     "potentialAction": {
                         "@type": "SearchAction",
-                        "target": "https://www.wellforged.in/product?search={search_term_string}",
+                        "target": "/product?search={search_term_string}",
                         "query-input": "required name=search_term_string"
                     }
                 }}

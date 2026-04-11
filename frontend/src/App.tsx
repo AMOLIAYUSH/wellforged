@@ -15,6 +15,7 @@ const Index = lazy(() => import("./pages/Index"));
 const TransparencyPage = lazy(() => import("./pages/TransparencyPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 const OrderSuccessPage = lazy(() => import("./pages/OrderSuccessPage"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
@@ -53,6 +54,7 @@ const App = () => (
                                         <Route path="/" element={<Index />} />
                                         <Route path="/transparency" element={<TransparencyPage />} />
                                         <Route path="/product" element={<ProductPage />} />
+                                        <Route path="/about" element={<AboutPage />} />
                                         <Route path="/checkout" element={<CheckoutPage />} />
                                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                                         <Route path="/terms-of-service" element={<TermsOfService />} />
